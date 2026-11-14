@@ -1,0 +1,49 @@
+# SecretBar
+
+> SecretBar keeps passwords, tokens and API keys in the Secure Enclave of your Mac. Your AI agent uses them by name and never sees a value. Command line tool and menu bar app, free and open source.
+
+- Website: https://secretbar.github.io/
+- Source: https://github.com/secretbar/secretbar
+- Install: `brew install secretbar/tap/secretbar`
+- License: MIT. Platform: macOS. Command: `secret`. Menu bar app: SecretBar.
+
+## Features
+
+- Hidden input: secret ask NAME opens a macOS dialog. You type the value. The agent gets stored: NAME. secret gen makes a random value that nobody sees.
+- Masked output: run --mask replaces each value with *** in stdout and stderr, also in base64 and URL encoding. Always on under Claude Code.
+- Claude Code hook: Stops secret get, cat .env, security … -w and env inside run before they start.
+- Post-quantum store: On macOS 26 and later, two Secure Enclave keys seal each value: P-256 and ML-KEM-768. A file copied today stays closed for a quantum computer later. secret touchid pq converts an old store after one Touch ID.
+- Lease for an agent: secret lease --for 8h NAME… holds the named secrets for up to 24 hours after one Touch ID that names them. They stay readable while the screen is locked. Any other name fails at once with not leased. secret lease --revoke ends it.
+- Search by meaning: secret ls --ask "shop database password" finds names with the on-device Apple model of macOS 27. The model sees names and comments only, never a value, and nothing leaves the Mac.
+- GitHub Actions: secret gh NAME -R owner/repo pushes a value to gh secret set through stdin, after you confirm it.
+- Browser sessions: secret cookie pull DOMAIN --all --as NAME moves a Safari session into the store as a cookie jar. A Safari extension captures session-only cookies. secret run --cookie-jar NAME gives curl a temporary jar that is deleted after the command.
+- References, not values: TOKEN=secret:MY_TOKEN in your .env. secret import moves an existing file. secret check shows what is missing.
+- Access log: Who read which secret and when: agent or human. Names only.
+- Expiry and backup: -x 2026-12-31 marks a token that expires. secret ls --expiring and SecretBar remind you. secret export writes one AES-256 file for a new Mac.
+- Works with any agent: Claude Code, Codex, Cursor, Aider: any agent that runs shell commands uses secret run. Claude Code also gets the hook and ready rules for CLAUDE.md.
+
+## FAQ
+
+- Does the AI agent ever see the value of a secret? No. The agent works with names. The value goes into the environment of the command that needs it, and the output comes back with *** in place of the value. A Claude Code hook stops commands that would print a value.
+- Where are the secrets stored? In one encrypted file on your Mac. Keys in the Secure Enclave seal each value. A read needs Touch ID, Apple Watch or the Mac password. Nothing goes to a cloud.
+- Which AI agents does it work with? Any agent that runs shell commands: Claude Code, Codex, Cursor, Aider and others. Claude Code also gets a hook and ready rules for its CLAUDE.md.
+- What does it cost? Nothing. SecretBar is open source under the MIT license.
+- Which macOS version do I need? macOS 14 or later on a Mac with a Secure Enclave (Apple silicon or T2). The post-quantum store needs macOS 26. Search by meaning needs macOS 27 with Apple Intelligence.
+- Can I move my secrets to a new Mac? Yes. secret export writes one file encrypted with AES-256 and your backup password. secret restore reads it on the new Mac.
+
+## Agent rules
+
+- Find a secret: `secret ls -l`. Use it: `secret run --mask NAME -- cmd`.
+- Never print a value. Never ask the user to paste a value into the chat: run `secret ask NAME`.
+- Full rules: https://github.com/secretbar/secretbar/blob/main/docs/claude-md-secrets.md
+
+## Languages
+
+- English: https://secretbar.github.io/
+- Deutsch: https://secretbar.github.io/de/
+- Français: https://secretbar.github.io/fr/
+- Español: https://secretbar.github.io/es/
+- Italiano: https://secretbar.github.io/it/
+- Português: https://secretbar.github.io/pt-PT/
+- Polski: https://secretbar.github.io/pl/
+- Русский: https://secretbar.github.io/ru/
