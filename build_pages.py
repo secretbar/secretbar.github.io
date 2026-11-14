@@ -111,8 +111,8 @@ def render(lang):
         "jsonld": jsonld(t, code),
     }
     attr_keys = {"meta.title", "meta.description", "meta.og_title", "meta.og_description", "js.copied",
-                 "js.copy_failed", "hero.copy_label", "install.copy", "nav.language", "bar.alt_main",
-                 "bar.alt_menu", "bar.alt_quick", "hero.facts_label", "hero.demo_label", "marquee.label"}
+                 "js.copy_failed", "hero.copy_label", "install.copy", "nav.language", "app.alt",
+                 "hero.redacted_hint", "doc.title"}
     tpl = (ROOT / "templates/home.html").read_text()
 
     def sub(m):
@@ -150,7 +150,7 @@ def build():
         "User-agent: PerplexityBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\n"
         f"Sitemap: {SITE}/sitemap.xml\n")
     t = EN
-    feats = [k[:-6] for k in EN if k.startswith("f.") and k.endswith(".title")]
+    feats = [k[:-6] for k in EN if re.fullmatch(r"c\d\.title", k)]
     lines = [
         "# SecretBar", "",
         f"> {strip(t['meta.description'])}", "",
@@ -158,8 +158,10 @@ def build():
         f"- Source: {REPO}",
         f"- Install: `{BREW}`",
         "- License: MIT. Platform: macOS. Command: `secret`. Menu bar app: SecretBar.", "",
-        "## Features", "",
+        "## The protocol", "",
     ] + [f"- {strip(t[f + '.title'])}: {strip(t[f + '.text'])}" for f in feats] + [
+        "", "## Also included", "",
+    ] + [f"- {strip(t[k])}" for k in EN if k.startswith("more.") and k != "more.title"] + [
         "", "## FAQ", "",
     ] + [f"- {strip(t[f'faq.q{i}'])} {strip(t[f'faq.a{i}'])}" for i in range(1, 7)] + [
         "", "## Agent rules", "",

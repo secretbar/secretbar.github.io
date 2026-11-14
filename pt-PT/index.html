@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SecretBar — segredos que o seu agente de IA usa mas nunca vê</title>
+<title>SecretBar — o seu agente conhece o nome, nunca o valor</title>
 <meta name="description" content="O SecretBar guarda palavras-passe, tokens e chaves de API na Secure Enclave do seu Mac. O seu agente de IA usa-os pelo nome e nunca vê um valor. Ferramenta de linha de comandos e app da barra de menus, gratuitas e open source.">
 <link rel="canonical" href="https://secretbar.github.io/pt-PT/">
 <link rel="alternate" hreflang="en" href="https://secretbar.github.io/">
@@ -15,330 +15,184 @@
 <link rel="alternate" hreflang="pl" href="https://secretbar.github.io/pl/">
 <link rel="alternate" hreflang="ru" href="https://secretbar.github.io/ru/">
 <link rel="alternate" hreflang="x-default" href="https://secretbar.github.io/">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#07080c" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#f6f7fb" media="(prefers-color-scheme: light)">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SecretBar">
 <meta property="og:locale" content="pt_PT">
-<meta property="og:title" content="SecretBar — o seu agente usa segredos, nunca os vê">
-<meta property="og:description" content="Armazenamento na Secure Enclave com cifragem pós-quântica, introdução oculta, saída mascarada, um hook para Claude Code. macOS, MIT, sem dependências.">
+<meta property="og:title" content="SecretBar — o seu agente conhece o nome, nunca o valor">
+<meta property="og:description" content="Um protocolo para segredos e agentes de IA no macOS: introdução oculta, Secure Enclave com chaves pós-quânticas, Touch ID, saída mascarada, um hook para Claude Code. MIT, sem dependências.">
 <meta property="og:url" content="https://secretbar.github.io/pt-PT/">
 <meta property="og:image" content="https://secretbar.github.io/assets/img/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SecretBar — o seu agente usa segredos, nunca os vê">
-<meta name="twitter:description" content="Armazenamento na Secure Enclave com cifragem pós-quântica, introdução oculta, saída mascarada, um hook para Claude Code. macOS, MIT, sem dependências.">
+<meta name="twitter:title" content="SecretBar — o seu agente conhece o nome, nunca o valor">
+<meta name="twitter:description" content="Um protocolo para segredos e agentes de IA no macOS: introdução oculta, Secure Enclave com chaves pós-quânticas, Touch ID, saída mascarada, um hook para Claude Code. MIT, sem dependências.">
 <meta name="twitter:image" content="https://secretbar.github.io/assets/img/og.png">
 <link rel="icon" type="image/png" href="/assets/img/icon.png">
 <link rel="apple-touch-icon" href="/assets/img/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=PT+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/paper.css">
 <script>document.documentElement.classList.add("js")</script>
-<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "SecretBar", "description": "O SecretBar guarda palavras-passe, tokens e chaves de API na Secure Enclave do seu Mac. O seu agente de IA usa-os pelo nome e nunca vê um valor. Ferramenta de linha de comandos e app da barra de menus, gratuitas e open source.", "applicationCategory": "SecurityApplication", "operatingSystem": "macOS 14 or later", "url": "https://secretbar.github.io/pt-PT/", "downloadUrl": "https://github.com/secretbar/secretbar/releases", "installUrl": "https://secretbar.github.io/pt-PT/#install", "softwareVersion": "1.8.0", "license": "https://opensource.org/licenses/MIT", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "codeRepository": "https://github.com/secretbar/secretbar", "inLanguage": "pt-PT", "image": "https://secretbar.github.io/assets/img/og.png"}, {"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": "pt-PT", "mainEntity": [{"@type": "Question", "name": "O agente de IA alguma vez vê o valor de um segredo?", "acceptedAnswer": {"@type": "Answer", "text": "Não. O agente trabalha com nomes. O valor vai para o ambiente do comando que precisa dele e a saída volta com *** em vez do valor. Um hook para Claude Code bloqueia os comandos que mostrariam um valor."}}, {"@type": "Question", "name": "Onde ficam guardados os segredos?", "acceptedAnswer": {"@type": "Answer", "text": "Num único ficheiro cifrado no seu Mac. Chaves na Secure Enclave selam cada valor. Ler exige Touch ID, Apple Watch ou a palavra-passe do Mac. Nada vai para a nuvem."}}, {"@type": "Question", "name": "Com que agentes de IA funciona?", "acceptedAnswer": {"@type": "Answer", "text": "Com qualquer agente que execute comandos de shell: Claude Code, Codex, Cursor, Aider e outros. O Claude Code recebe ainda um hook e regras prontas para o seu CLAUDE.md."}}, {"@type": "Question", "name": "Quanto custa?", "acceptedAnswer": {"@type": "Answer", "text": "Nada. O SecretBar é open source com licença MIT."}}, {"@type": "Question", "name": "Que versão do macOS é necessária?", "acceptedAnswer": {"@type": "Answer", "text": "macOS 14 ou posterior num Mac com Secure Enclave (chip Apple ou T2). O armazenamento pós-quântico requer macOS 26. A pesquisa por significado requer macOS 27 com Apple Intelligence."}}, {"@type": "Question", "name": "Posso passar os meus segredos para um novo Mac?", "acceptedAnswer": {"@type": "Answer", "text": "Sim. secret export escreve um ficheiro cifrado com AES-256 e a sua palavra-passe de cópia. secret restore lê-o no novo Mac."}}]}]</script>
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "SecretBar", "description": "O SecretBar guarda palavras-passe, tokens e chaves de API na Secure Enclave do seu Mac. O seu agente de IA usa-os pelo nome e nunca vê um valor. Ferramenta de linha de comandos e app da barra de menus, gratuitas e open source.", "applicationCategory": "SecurityApplication", "operatingSystem": "macOS 14 or later", "url": "https://secretbar.github.io/pt-PT/", "downloadUrl": "https://github.com/secretbar/secretbar/releases", "installUrl": "https://secretbar.github.io/pt-PT/#install", "softwareVersion": "1.8.0", "license": "https://opensource.org/licenses/MIT", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "codeRepository": "https://github.com/secretbar/secretbar", "inLanguage": "pt-PT", "image": "https://secretbar.github.io/assets/img/og.png"}, {"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": "pt-PT", "mainEntity": [{"@type": "Question", "name": "O agente de IA alguma vez vê o valor de um segredo?", "acceptedAnswer": {"@type": "Answer", "text": "Não. O agente trabalha com nomes. O valor vai para o ambiente do comando que precisa dele e a saída volta com *** em vez do valor. Um hook para Claude Code bloqueia os comandos que mostrariam um valor."}}, {"@type": "Question", "name": "Onde ficam guardados os segredos?", "acceptedAnswer": {"@type": "Answer", "text": "Num único ficheiro cifrado no seu Mac. Chaves na Secure Enclave selam cada valor. Uma leitura requer Touch ID, Apple Watch ou a palavra-passe do Mac. Nada vai para a nuvem."}}, {"@type": "Question", "name": "Com que agentes de IA funciona?", "acceptedAnswer": {"@type": "Answer", "text": "Com qualquer agente que execute comandos de shell: Claude Code, Codex, Cursor, Aider e outros. O Claude Code recebe ainda um hook e regras prontas para o seu CLAUDE.md."}}, {"@type": "Question", "name": "Quanto custa?", "acceptedAnswer": {"@type": "Answer", "text": "Nada. O SecretBar é open source, com licença MIT."}}, {"@type": "Question", "name": "Que versão do macOS é necessária?", "acceptedAnswer": {"@type": "Answer", "text": "macOS 14 ou posterior num Mac com Secure Enclave (chip Apple ou T2). O armazenamento pós-quântico requer macOS 26. A pesquisa por significado requer macOS 27 com Apple Intelligence."}}, {"@type": "Question", "name": "Posso passar os meus segredos para um Mac novo?", "acceptedAnswer": {"@type": "Answer", "text": "Sim. secret export escreve um ficheiro cifrado com AES-256 e a sua palavra-passe de cópia. secret restore lê-o no novo Mac."}}]}]</script>
 </head>
 <body data-copied="Copiado para a área de transferência" data-copy-failed="Selecione o texto e copie-o">
-<div class="bg" aria-hidden="true">
-  <div class="bg-grid"></div>
-  <div class="orb orb-a"></div>
-  <div class="orb orb-b"></div>
-  <div class="orb orb-c"></div>
-  <div class="spot"></div>
-</div>
 
-<header class="nav">
-  <a class="brand" href="#top" aria-label="SecretBar">
-    <img src="/assets/img/icon.png" alt="" width="28" height="28">
-    <span>SecretBar</span>
-  </a>
-  <nav class="nav-links" aria-label="Sections">
-    <a href="#flow">Como funciona</a>
-    <a href="#features">Funcionalidades</a>
-    <a href="#secretbar">App da barra de menus</a>
-    <a href="#security">Segurança</a>
+<header class="top">
+  <a class="mark" href="#top" aria-label="SecretBar"><span class="mark-name">Secret<span class="rx rx-mark" aria-hidden="true">Bar</span></span></a>
+  <nav class="links" aria-label="Sections">
+    <a href="#protocol">Protocolo</a>
+    <a href="#app">App</a>
+    <a href="#threats">Modelo de ameaças</a>
     <a href="#faq">FAQ</a>
-    <a href="#install">Instalação</a>
+    <a href="#install">Instalar</a>
   </nav>
-  <div class="nav-end">
-    <label class="lang-switch"><span class="sr-only">Idioma</span>
-      <select id="lang" aria-label="Idioma"><option value="https://secretbar.github.io/" lang="en">English</option><option value="https://secretbar.github.io/de/" lang="de">Deutsch</option><option value="https://secretbar.github.io/fr/" lang="fr">Français</option><option value="https://secretbar.github.io/es/" lang="es">Español</option><option value="https://secretbar.github.io/it/" lang="it">Italiano</option><option value="https://secretbar.github.io/pt-PT/" selected lang="pt-PT">Português</option><option value="https://secretbar.github.io/pl/" lang="pl">Polski</option><option value="https://secretbar.github.io/ru/" lang="ru">Русский</option></select>
-    </label>
-    <a class="btn btn-ghost btn-sm" href="https://github.com/secretbar/secretbar">
-      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-      GitHub
-    </a>
+  <div class="top-end">
+    <label class="lang"><span class="sr">Idioma</span><select id="lang" aria-label="Idioma"><option value="https://secretbar.github.io/" lang="en">English</option><option value="https://secretbar.github.io/de/" lang="de">Deutsch</option><option value="https://secretbar.github.io/fr/" lang="fr">Français</option><option value="https://secretbar.github.io/es/" lang="es">Español</option><option value="https://secretbar.github.io/it/" lang="it">Italiano</option><option value="https://secretbar.github.io/pt-PT/" selected lang="pt-PT">Português</option><option value="https://secretbar.github.io/pl/" lang="pl">Polski</option><option value="https://secretbar.github.io/ru/" lang="ru">Русский</option></select></label>
+    <a class="gh" href="https://github.com/secretbar/secretbar">GitHub ↗</a>
   </div>
 </header>
 
 <main id="top">
 
 <section class="hero">
-  <div class="hero-copy">
-    <p class="eyebrow reveal"><span class="dot"></span> macOS · Secure Enclave · Claude Code</p>
-    <h1 class="reveal">O seu agente usa segredos.<br><span class="grad">Nunca os vê.</span></h1>
-    <p class="lede reveal">O SecretBar guarda palavras-passe, tokens e chaves de API na Secure Enclave do seu Mac. O agente trabalha com nomes. Os valores vão diretamente para o processo que precisa deles e voltam como <span class="mask-chip">***</span>.</p>
-    <div class="cta reveal">
-      <div class="install" data-copy="brew install secretbar/tap/secretbar">
-        <span class="prompt">$</span>
-        <code>brew install secretbar/tap/secretbar</code>
-        <button class="copy" type="button" aria-label="Copiar o comando de instalação">
-          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M9 9h10v10H9zM5 15V5h10"/></svg>
-        </button>
+  <p class="kicker">Um protocolo para segredos e agentes de IA · macOS</p>
+  <h1 class="display">O seu agente conhece o nome.<br>Nunca o <span class="rx rx-hero" tabindex="0" data-hint="Requer Touch ID">valor</span>.</h1>
+  <div class="hero-grid">
+    <div class="hero-text">
+      <p class="lede">O SecretBar é um comando e uma app da barra de menus para o Mac. Palavras-passe, tokens e chaves de API ficam na Secure Enclave. O agente pede pelo nome, uma pessoa confirma, o processo recebe o valor e a saída volta rasurada.</p>
+      <div class="cmd" data-copy="brew install secretbar/tap/secretbar"><code><span class="pr">$</span> brew install secretbar/tap/secretbar</code><button class="copy" type="button" aria-label="Copiar o comando de instalação">⧉</button></div>
+      <a class="arrow" href="#protocol">Ler o protocolo ↓</a>
+    </div>
+
+    <figure class="doc" aria-label="Transcrição">
+      <figcaption class="doc-head"><span>Transcrição</span><span>sessão do agente · shop · 14 nov. 2026</span></figcaption>
+      <div class="doc-body">
+        <p class="line agent"><span class="who">agent ›</span> Preciso da palavra-passe da base de dados da loja.</p>
+        <p class="line"><span class="pr">$</span> secret ls -l</p>
+        <p class="line out">SHOP_DB_PASSWORD&nbsp;&nbsp;shop: PostgreSQL password<sup>1</sup></p>
+        <p class="line out">BILLING_API_TOKEN billing: prod API token</p>
+        <p class="line"><span class="pr">$</span> secret run --mask SHOP_DB_PASSWORD -- psql -c 'select 1'<sup>2</sup></p>
+        <p class="line out">password=<span class="rx rx-line">k9#Vq2!xR7mW</span> → <b>***</b><sup>3</sup></p>
       </div>
-      <a class="btn btn-primary" href="#flow">Ver como funciona</a>
-    </div>
-    <ul class="facts reveal" aria-label="Factos">
-      <li><b>0</b> dependências</li>
-      <li><b>bash 3.2</b> + auxiliares em Swift</li>
-      <li>licença <b>MIT</b></li>
-    </ul>
-  </div>
-
-  <div class="hero-demo reveal" aria-label="Demonstração no Terminal">
-    <div class="window term" id="term">
-      <div class="titlebar"><i></i><i></i><i></i><span>zsh — sessão do agente</span></div>
-      <pre class="term-body" id="term-body" aria-live="off"></pre>
-      <div class="dialog" id="dialog" aria-hidden="true">
-        <div class="dialog-icon"><img src="/assets/img/icon.png" alt="" width="44" height="44"></div>
-        <div class="dialog-text">
-          <b>secret</b>
-          <span>Cole o token de github.com/settings/tokens</span>
-          <div class="field"><span id="dialog-dots"></span><span class="caret"></span></div>
-          <div class="dialog-btns"><span>Cancelar</span><span class="ok">OK</span></div>
-        </div>
-      </div>
-      <div class="touchid" id="touchid" aria-hidden="true">
-        <svg viewBox="0 0 64 64" width="64" height="64">
-          <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
-            <path class="fp" d="M20 50c-3-5-4-10-4-16 0-9 7-16 16-16s16 7 16 16"/>
-            <path class="fp" d="M26 54c-2-6-3-12-3-19 0-5 4-9 9-9s9 4 9 9c0 4 0 8-1 12"/>
-            <path class="fp" d="M32 35c0 8 1 14 4 20"/>
-            <path class="fp" d="M14 24c4-8 10-12 18-12 9 0 15 4 19 11"/>
-            <path class="fp" d="M47 47c1-4 1-8 1-12"/>
-          </g>
-        </svg>
-        <span>Touch ID para usar GITHUB_TOKEN no gh</span>
-      </div>
-    </div>
+      <ol class="notes">
+        <li>O agente vê nomes e comentários. Nunca valores.</li>
+        <li>Touch ID no seu Mac. O valor vai para o ambiente do psql e para mais lado nenhum.</li>
+        <li>A saída volta mascarada. Também em base64 e em codificação URL.</li>
+      </ol>
+    </figure>
   </div>
 </section>
 
-<section class="marquee" aria-label="Funciona com">
-  <div class="marquee-track">
-    <span>Claude Code</span><span>Codex</span><span>GitHub Actions</span><span>.env</span><span>Touch ID</span><span>Apple Watch</span><span>Spotlight</span><span>Siri</span><span>Shortcuts</span><span>Safari</span><span>Homebrew</span>
-    <span>Claude Code</span><span>Codex</span><span>GitHub Actions</span><span>.env</span><span>Touch ID</span><span>Apple Watch</span><span>Spotlight</span><span>Siri</span><span>Shortcuts</span><span>Safari</span><span>Homebrew</span>
-  </div>
-</section>
-
-<section class="section" id="flow">
-  <div class="section-head reveal">
-    <p class="kicker">Como funciona</p>
-    <h2>O valor faz um desvio<br>à volta do agente.</h2>
-    <p class="sub">Na escrita e na leitura. O agente pede um segredo pelo nome. Uma pessoa escreve ou confirma. O processo recebe o valor. A saída volta mascarada.</p>
-  </div>
-
-  <div class="flow reveal" id="flow-diagram">
-    <svg class="flow-lines" viewBox="0 0 1000 260" preserveAspectRatio="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="lg" x1="0" x2="1">
-          <stop offset="0" stop-color="var(--c1)"/><stop offset=".5" stop-color="var(--c2)"/><stop offset="1" stop-color="var(--c3)"/>
-        </linearGradient>
-      </defs>
-      <path id="flow-path" d="M60 130 C 180 130, 200 60, 300 60 S 440 130, 500 130 S 640 200, 700 200 S 840 130, 940 130" fill="none" stroke="url(#lg)" stroke-width="2.5" stroke-dasharray="6 8"/>
-      <circle r="7" class="packet" id="packet"/>
-      <circle r="16" class="packet-glow" id="packet-glow"/>
-    </svg>
-    <ol class="flow-nodes">
-      <li style="--x:6%;--y:50%"><span class="node-ico"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6" fill="none" stroke="currentColor" stroke-width="2"/></svg></span><b>Pessoa</b><small>escreve num campo oculto</small></li>
-      <li style="--x:30%;--y:23%"><span class="node-ico"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 14h10M7 10h.01M11 10h.01M15 10h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><b>secret ask</b><small>diálogo do macOS, não o chat</small></li>
-      <li style="--x:50%;--y:50%" class="chip-node"><span class="chip" aria-hidden="true"><i></i></span><b>Secure Enclave</b><small>P-256 + ML-KEM-768, Touch ID para ler</small></li>
-      <li style="--x:70%;--y:77%"><span class="node-ico"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 7l5 5-5 5M12 17h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><b>secret run</b><small>valor no ambiente de cmd</small></li>
-      <li style="--x:94%;--y:50%"><span class="node-ico"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="5" y="8" width="14" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 4v4M9 13h.01M15 13h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><b>Agente</b><small>vê <code>***</code></small></li>
-    </ol>
-  </div>
-
-  <div class="split">
-    <div class="pane reveal">
-      <p class="pane-label">O que o agente vê</p>
-      <pre class="code"><span class="c-p">$</span> secret ls -l
-SHOP_DB_PASSWORD   shop: PostgreSQL password
-BILLING_API_TOKEN  billing: prod API token
-GITHUB_TOKEN       GitHub token for gh
-
-<span class="c-p">$</span> secret run --mask GITHUB_TOKEN -- gh api user
-{ "login": "you", "token": "<span class="masked">***</span>" }</pre>
-    </div>
-    <div class="pane pane-hot reveal">
-      <p class="pane-label">O que o processo recebe</p>
-      <pre class="code">GITHUB_TOKEN=<span class="scramble" data-final="ghp_••••••••••••••••••••••••••••••••">ghp_••••••••••••••••••••••••••••••••</span>
-<span class="c-dim"># só no ambiente do gh,
-# só depois do Touch ID,
-# nunca em argv, nunca no chat.</span></pre>
-      <div class="badge-row"><span class="pill">stdin, não argv</span><span class="pill">mascarado: em bruto · base64 · URL</span><span class="pill">registo de acessos</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="features">
-  <div class="section-head reveal">
-    <p class="kicker">Funcionalidades</p>
-    <h2>Feito para trabalhar com um agente.</h2>
-  </div>
-  <div class="bento">
-    <article class="card card-wide reveal tilt">
-      <div class="card-ico">⌘</div>
-      <h3>Introdução oculta</h3>
-      <p><code>secret ask NAME</code> abre um diálogo do macOS. Escreve o valor. O agente recebe <code>stored: NAME</code>. <code>secret gen</code> cria um valor aleatório que ninguém vê.</p>
-      <pre class="mini"><span class="c-p">$</span> secret gen -l 32 -c "shop: db password" SHOP_DB_PASSWORD
-stored: SHOP_DB_PASSWORD</pre>
-    </article>
-    <article class="card reveal tilt">
-      <div class="card-ico">***</div>
-      <h3>Saída mascarada</h3>
-      <p><code>run --mask</code> substitui cada valor por <code>***</code> em stdout e stderr, também em base64 e codificação URL. Sempre ativo no Claude Code.</p>
-    </article>
-    <article class="card reveal tilt">
-      <div class="card-ico"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 6l12 12" stroke="currentColor" stroke-width="2"/></svg></div>
-      <h3>Hook para Claude Code</h3>
-      <p>Bloqueia <code>secret get</code>, <code>cat .env</code>, <code>security … -w</code> e <code>env</code> dentro de <code>run</code> antes de arrancarem.</p>
-      <div class="blocked"><code>cat .env</code><span>Bloqueado pelo SecretBar</span></div>
-    </article>
-    <article class="card reveal tilt">
-      <div class="card-ico">PQ</div>
-      <h3>Armazenamento pós-quântico</h3>
-      <p>A partir do macOS 26, duas chaves da Secure Enclave selam cada valor: P-256 e ML-KEM-768. Um ficheiro copiado hoje continua fechado para um futuro computador quântico. <code>secret touchid pq</code> converte um armazenamento antigo após um único Touch ID.</p>
-    </article>
-    <article class="card reveal tilt">
-      <div class="card-ico">&#9202;</div>
-      <h3>Concessão a um agente</h3>
-      <p><code>secret lease --for 8h NAME…</code> mantém os segredos indicados até 24 horas após um Touch ID que os nomeia. Continuam legíveis com o ecrã bloqueado. Qualquer outro nome falha de imediato com <code>not leased</code>. <code>secret lease --revoke</code> termina-a.</p>
-    </article>
-    <article class="card reveal tilt">
-      <div class="card-ico">?</div>
-      <h3>Pesquisa por significado</h3>
-      <p><code>secret ls --ask "shop database password"</code> encontra nomes com o modelo da Apple no dispositivo do macOS 27. O modelo só vê nomes e comentários, nunca um valor, e nada sai do Mac.</p>
-    </article>
-    <article class="card reveal tilt">
-      <div class="card-ico">⇪</div>
-      <h3>GitHub Actions</h3>
-      <p><code>secret gh NAME -R owner/repo</code> envia um valor para <code>gh secret set</code> via stdin, depois de o confirmar.</p>
-    </article>
-    <article class="card reveal tilt">
-      <div class="card-ico">&#127850;</div>
-      <h3>Sessões do navegador</h3>
-      <p><code>secret cookie pull DOMAIN --all --as NAME</code> passa uma sessão do Safari para o armazenamento como cookie jar. Uma extensão do Safari captura os cookies de sessão. <code>secret run --cookie-jar NAME</code> dá ao curl um jar temporário apagado após o comando.</p>
-    </article>
-    <article class="card reveal tilt">
-      <div class="card-ico">.env</div>
-      <h3>Referências, não valores</h3>
-      <p><code>TOKEN=secret:MY_TOKEN</code> no seu <code>.env</code>. <code>secret import</code> migra um ficheiro existente. <code>secret check</code> mostra o que falta.</p>
-    </article>
-    <article class="card card-wide reveal tilt">
-      <div class="card-ico">≡</div>
-      <h3>Registo de acessos</h3>
-      <p>Quem leu que segredo e quando: <code>agent</code> ou <code>human</code>. Só nomes.</p>
-      <pre class="mini">2026-10-23 09:12  run   agent  SHOP_DB_USER SHOP_DB_PASSWORD  psql
-2026-10-23 09:40  copy  human  BILLING_API_TOKEN
-2026-10-23 10:02  gh    agent  DEPLOY_KEY  -R acme/shop</pre>
-    </article>
-    <article class="card reveal tilt">
-      <div class="card-ico">⌛︎</div>
-      <h3>Validade e cópia de segurança</h3>
-      <p><code>-x 2026-12-31</code> marca um token que expira. <code>secret ls --expiring</code> e o SecretBar lembram-no. <code>secret export</code> escreve um ficheiro AES-256 para um novo Mac.</p>
-    </article>
-    <article class="card card-wide reveal tilt">
-      <div class="card-ico">&gt;_</div>
-      <h3>Funciona com qualquer agente</h3>
-      <p>Claude Code, Codex, Cursor, Aider: qualquer agente que execute comandos de shell usa <code>secret run</code>. O Claude Code recebe ainda o hook e regras prontas para <code>CLAUDE.md</code>.</p>
-      <pre class="mini"><span class="c-p">$</span> secret run --mask SHOP_DB_PASSWORD -- psql -c 'select 1'
-<span class="c-p">$</span> secret run --mask -e .env -- npm test</pre>
-    </article>
-  </div>
-</section>
-
-<section class="section" id="secretbar">
-  <div class="section-head reveal">
-    <p class="kicker">App da barra de menus</p>
-    <h2>SecretBar<br>para o lado humano.</h2>
-    <p class="sub">⌥⌘S a partir de qualquer app, Spotlight, Siri e Atalhos, um cartão por segredo com os ficheiros <code>.env</code> que o usam. A app nunca lê um valor: o auxiliar coloca-o na área de transferência e limpa-o ao fim de 30 segundos.</p>
-  </div>
-  <div class="stage reveal" id="stage">
-    <picture class="shot shot-main" data-depth="0.04">
-      <source srcset="/assets/img/main-light.png" media="(prefers-color-scheme: light)">
-      <img src="/assets/img/main-dark.png" alt="Janela principal do SecretBar com uma lista de segredos e o cartão de SHOP_DB_PASSWORD" width="856" height="680" loading="lazy">
-    </picture>
-    <picture class="shot shot-menu" data-depth="0.1">
-      <source srcset="/assets/img/menubar-light.png" media="(prefers-color-scheme: light)">
-      <img src="/assets/img/menubar-dark.png" alt="Painel do SecretBar na barra de menus" width="380" height="500" loading="lazy">
-    </picture>
-    <picture class="shot shot-quick" data-depth="0.07">
-      <source srcset="/assets/img/quick-light.png" media="(prefers-color-scheme: light)">
-      <img src="/assets/img/quick-dark.png" alt="Painel de pesquisa rápida do SecretBar" width="700" height="480" loading="lazy">
-    </picture>
-  </div>
-  <ul class="ticks reveal">
-    <li>Pesquisa rápida ⌥⌘S: ↩ copia a referência, ⇧↩ o valor</li>
-    <li>Spotlight, Siri e a ação de Atalhos “Copiar segredo”</li>
-    <li>+ na barra de menus: um novo segredo, e a sua referência <code>secret:NAME</code> fica na área de transferência</li>
-    <li>Atividade: execuções do agente e pedidos de Touch ID</li>
-    <li>Notificações de validade</li>
-    <li>English, Deutsch, Français, Español, Italiano, Português, Polski, Русский</li>
-  </ul>
-</section>
-
-<section class="section" id="security">
-  <div class="section-head reveal">
-    <p class="kicker">Segurança</p>
-    <h2>O que impede.<br><span class="muted">E o que não impede.</span></h2>
-  </div>
-  <div class="threats">
-    <div class="threat reveal"><h3>Um valor no chat</h3><p class="yes">Introdução no diálogo, geração, saída mascarada, o hook.</p><p class="no">Um valor numa codificação própria, por exemplo <code>base64(user:pass)</code>.</p></div>
-    <div class="threat reveal"><h3>Um valor em <code>ps</code></h3><p class="yes">Os valores passam por stdin e descritores de ficheiro.</p><p class="no"><code>set NAME VALUE</code> com o valor como argumento.</p></div>
-    <div class="threat reveal"><h3>Um processo lê nas suas costas</h3><p class="yes">A chave da Secure Enclave só funciona após Touch ID ou Apple Watch, para qualquer processo com qualquer assinatura.</p><p class="no">Dentro do período de tolerância. É deslizante: 30 minutos inativo, 8 horas no máximo. O bloqueio do ecrã ou a pausa terminam-no.</p></div>
-    <div class="threat reveal"><h3>Perda do Mac</h3><p class="yes"><code>secret export</code>: AES-256, PBKDF2 com 600 000 iterações.</p><p class="no">Ninguém consegue recuperar uma palavra-passe de cópia esquecida.</p></div>
-  </div>
-</section>
-
-<section class="section" id="faq">
-  <div class="section-head reveal">
-    <p class="kicker">FAQ</p>
-    <h2>Perguntas.</h2>
-  </div>
-  <div class="faq">
-    <details class="reveal"><summary>O agente de IA alguma vez vê o valor de um segredo?</summary><p>Não. O agente trabalha com nomes. O valor vai para o ambiente do comando que precisa dele e a saída volta com <code>***</code> em vez do valor. Um hook para Claude Code bloqueia os comandos que mostrariam um valor.</p></details>
-    <details class="reveal"><summary>Onde ficam guardados os segredos?</summary><p>Num único ficheiro cifrado no seu Mac. Chaves na Secure Enclave selam cada valor. Ler exige Touch ID, Apple Watch ou a palavra-passe do Mac. Nada vai para a nuvem.</p></details>
-    <details class="reveal"><summary>Com que agentes de IA funciona?</summary><p>Com qualquer agente que execute comandos de shell: Claude Code, Codex, Cursor, Aider e outros. O Claude Code recebe ainda um hook e regras prontas para o seu <code>CLAUDE.md</code>.</p></details>
-    <details class="reveal"><summary>Quanto custa?</summary><p>Nada. O SecretBar é open source com licença MIT.</p></details>
-    <details class="reveal"><summary>Que versão do macOS é necessária?</summary><p>macOS 14 ou posterior num Mac com Secure Enclave (chip Apple ou T2). O armazenamento pós-quântico requer macOS 26. A pesquisa por significado requer macOS 27 com Apple Intelligence.</p></details>
-    <details class="reveal"><summary>Posso passar os meus segredos para um novo Mac?</summary><p>Sim. <code>secret export</code> escreve um ficheiro cifrado com AES-256 e a sua palavra-passe de cópia. <code>secret restore</code> lê-o no novo Mac.</p></details>
-  </div>
-</section>
-
-<section class="section" id="install">
-  <div class="section-head reveal">
-    <p class="kicker">Instalação</p>
-    <h2>Três comandos.</h2>
-  </div>
-  <ol class="steps">
-    <li class="step reveal"><span class="n">1</span><div><h3>Instalar</h3><div class="install" data-copy="brew install secretbar/tap/secretbar"><span class="prompt">$</span><code>brew install secretbar/tap/secretbar</code><button class="copy" type="button" aria-label="Copiar"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M9 9h10v10H9zM5 15V5h10"/></svg></button></div></div></li>
-    <li class="step reveal"><span class="n">2</span><div><h3>Criar o armazenamento e o primeiro segredo</h3><div class="install" data-copy="secret init &amp;&amp; secret ask MY_TOKEN"><span class="prompt">$</span><code>secret init &amp;&amp; secret ask MY_TOKEN</code><button class="copy" type="button" aria-label="Copiar"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M9 9h10v10H9zM5 15V5h10"/></svg></button></div></div></li>
-    <li class="step reveal"><span class="n">3</span><div><h3>Ligar o Claude Code e a app da barra de menus</h3><div class="install" data-copy="&quot;$(brew --prefix secretbar)/libexec/install.sh&quot; --claude-hook --app"><span class="prompt">$</span><code>"$(brew --prefix secretbar)/libexec/install.sh" --claude-hook --app</code><button class="copy" type="button" aria-label="Copiar"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M9 9h10v10H9zM5 15V5h10"/></svg></button></div></div></li>
+<section class="sec" id="protocol">
+  <header class="sec-head">
+    <p class="kicker">O protocolo</p>
+    <h2 class="display2">O valor segue seis regras.</h2>
+    <p class="sub">Cada funcionalidade do SecretBar impõe uma delas. Nenhuma depende do bom comportamento do agente.</p>
+  </header>
+  <ol class="clauses">
+    <li><span class="no">§1</span><h3>Introdução</h3><p>Uma pessoa escreve o valor numa caixa de diálogo oculta do macOS: <code>secret ask NAME</code>. O chat nunca o vê. <code>secret gen</code> cria um valor aleatório que ninguém vê.</p></li>
+    <li><span class="no">§2</span><h3>Armazenamento</h3><p>Chaves na Secure Enclave selam cada valor: P-256 e ML-KEM-768, pós-quântico. O ficheiro inteiro é cifrado de novo. Nada vai para a nuvem.</p></li>
+    <li><span class="no">§3</span><h3>Acesso</h3><p>Cada leitura requer Touch ID ou Apple Watch. O período de tolerância desliza durante 30 minutos e termina quando o ecrã bloqueia. Uma concessão dá a um agente segredos indicados pelo nome até 24 horas, após um único Touch ID.</p></li>
+    <li><span class="no">§4</span><h3>Utilização</h3><p><code>secret run</code> coloca o valor no ambiente de um único processo. Não em argv, num ficheiro ou no chat. Um ficheiro <code>.env</code> guarda referências: <code>secret:NAME</code>.</p></li>
+    <li><span class="no">§5</span><h3>Saída</h3><p>Cada valor em stdout e stderr volta como <code>***</code>, também em base64 e em codificação URL. Um hook para Claude Code bloqueia <code>cat .env</code>, <code>secret get</code> e <code>env</code> antes de correrem.</p></li>
+    <li><span class="no">§6</span><h3>Registo</h3><p>Um registo de acessos guarda quem leu que nome e quando: <code>agent</code> ou <code>human</code>. Só nomes.</p></li>
   </ol>
-  <p class="note reveal">Só macOS. O comando não precisa de mais nada além das ferramentas do sistema.</p>
+  <aside class="appendix">
+    <h3>Também incluído</h3>
+    <ul>
+      <li><b>Pesquisa por significado.</b> <code>secret ls --ask "shop database"</code> encontra nomes com o modelo local do macOS 27. Lê nomes e comentários, nunca valores.</li>
+      <li><b>Sessões do browser.</b> Uma sessão do Safari passa para o armazenamento como cookie jar. O curl usa-a, o agente nunca vê um cookie.</li>
+      <li><b>GitHub Actions.</b> <code>secret gh NAME -R owner/repo</code> envia um valor para <code>gh secret set</code> pelo stdin, depois de confirmar.</li>
+      <li><b>Validade e cópia.</b> Os tokens com data avisam antes de expirar. <code>secret export</code> escreve um único ficheiro AES-256 para um Mac novo.</li>
+      <li><b>Qualquer agente.</b> Claude Code, Codex, Cursor, Aider: qualquer agente que execute comandos de shell. O Claude Code recebe ainda o hook e regras prontas.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="sec" id="app">
+  <header class="sec-head">
+    <p class="kicker">A app da barra de menus</p>
+    <h2 class="display2">O lado humano do protocolo.</h2>
+  </header>
+  <div class="app-grid">
+    <figure class="fig">
+      <picture>
+        <source srcset="/assets/img/main-dark.png" media="(prefers-color-scheme: dark)">
+        <img src="/assets/img/main-light.png" alt="Janela principal do SecretBar com uma lista de segredos e o cartão de SHOP_DB_PASSWORD" width="856" height="680" loading="lazy">
+      </picture>
+      <figcaption>Fig. 1 — SecretBar. Dados de demonstração.</figcaption>
+    </figure>
+    <div class="app-text">
+      <p>⌥⌘S a partir de qualquer app, Spotlight, Siri e Atalhos. Um cartão por segredo com os ficheiros <code>.env</code> que o usam. A app nunca lê um valor: o auxiliar coloca-o na área de transferência e limpa-o ao fim de 30 segundos.</p>
+      <ul class="dash">
+        <li>Pesquisa rápida: ↩ copia a referência, ⇧↩ o valor</li>
+        <li>+ na barra de menus: um segredo novo, com a referência na área de transferência</li>
+        <li>Atividade: execuções do agente e pedidos de Touch ID</li>
+        <li>English, Deutsch, Français, Español, Italiano, Português, Polski, Русский</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="threats">
+  <header class="sec-head">
+    <p class="kicker">Modelo de ameaças</p>
+    <h2 class="display2">O que trava, e o que não trava.</h2>
+  </header>
+  <div class="table-wrap">
+    <table class="threats">
+      <thead><tr><th>Ameaça</th><th>Trava</th><th>Não trava</th></tr></thead>
+      <tbody>
+        <tr><th>Um valor no chat</th><td>Introdução por diálogo, geração, saída mascarada, o hook.</td><td>Um valor numa codificação própria, por exemplo <code>base64(user:pass)</code>.</td></tr>
+        <tr><th>Um valor no <code>ps</code></th><td>Os valores passam por stdin e descritores de ficheiro.</td><td><code>secret set NAME VALUE</code> com o valor como argumento.</td></tr>
+        <tr><th>Um processo lê nas suas costas</th><td>A chave da Secure Enclave só funciona após Touch ID ou Apple Watch, para qualquer processo.</td><td>Leituras dentro do período de tolerância: 30 minutos inativo, 8 horas no máximo.</td></tr>
+        <tr><th>Perda do Mac</th><td><code>secret export</code>: AES-256, PBKDF2 com 600 000 iterações.</td><td>Ninguém consegue recuperar uma palavra-passe de cópia esquecida.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="sec" id="faq">
+  <header class="sec-head">
+    <p class="kicker">Perguntas</p>
+  </header>
+  <dl class="faq">
+    <div><dt>O agente de IA alguma vez vê o valor de um segredo?</dt><dd>Não. O agente trabalha com nomes. O valor vai para o ambiente do comando que precisa dele e a saída volta com <code>***</code> em vez do valor. Um hook para Claude Code bloqueia os comandos que mostrariam um valor.</dd></div>
+    <div><dt>Onde ficam guardados os segredos?</dt><dd>Num único ficheiro cifrado no seu Mac. Chaves na Secure Enclave selam cada valor. Uma leitura requer Touch ID, Apple Watch ou a palavra-passe do Mac. Nada vai para a nuvem.</dd></div>
+    <div><dt>Com que agentes de IA funciona?</dt><dd>Com qualquer agente que execute comandos de shell: Claude Code, Codex, Cursor, Aider e outros. O Claude Code recebe ainda um hook e regras prontas para o seu <code>CLAUDE.md</code>.</dd></div>
+    <div><dt>Quanto custa?</dt><dd>Nada. O SecretBar é open source, com licença MIT.</dd></div>
+    <div><dt>Que versão do macOS é necessária?</dt><dd>macOS 14 ou posterior num Mac com Secure Enclave (chip Apple ou T2). O armazenamento pós-quântico requer macOS 26. A pesquisa por significado requer macOS 27 com Apple Intelligence.</dd></div>
+    <div><dt>Posso passar os meus segredos para um Mac novo?</dt><dd>Sim. <code>secret export</code> escreve um ficheiro cifrado com AES-256 e a sua palavra-passe de cópia. <code>secret restore</code> lê-o no novo Mac.</dd></div>
+  </dl>
+</section>
+
+<section class="sec" id="install">
+  <header class="sec-head">
+    <p class="kicker">Instalação</p>
+    <h2 class="display2">Três linhas, depois assine aqui.</h2>
+  </header>
+  <ol class="steps">
+    <li><span class="note">O comando, os dois auxiliares e o preenchimento automático do zsh</span><div class="cmd" data-copy="brew install secretbar/tap/secretbar"><code><span class="pr">$</span> brew install secretbar/tap/secretbar</code><button class="copy" type="button" aria-label="Copiar">⧉</button></div></li>
+    <li><span class="note">O armazenamento e depois o primeiro segredo, escrito numa caixa de diálogo</span><div class="cmd" data-copy="secret init &amp;&amp; secret ask MY_TOKEN"><code><span class="pr">$</span> secret init &amp;&amp; secret ask MY_TOKEN</code><button class="copy" type="button" aria-label="Copiar">⧉</button></div></li>
+    <li><span class="note">O hook para Claude Code, as regras do agente e a app da barra de menus</span><div class="cmd" data-copy="&quot;$(brew --prefix secretbar)/libexec/install.sh&quot; --claude-hook --app"><code><span class="pr">$</span> "$(brew --prefix secretbar)/libexec/install.sh" --claude-hook --app</code><button class="copy" type="button" aria-label="Copiar">⧉</button></div></li>
+  </ol>
+  <div class="sign"><span class="sign-line"></span><span class="sign-label">Touch ID</span></div>
+  <p class="fine">macOS 14 ou posterior. Sem dependências além das ferramentas do sistema. Gratuito e open source, MIT.</p>
 </section>
 
 </main>
 
-<footer class="footer">
-  <span>© 2026 SecretBar · MIT</span>
-  <span><a href="https://github.com/secretbar/secretbar">Código-fonte</a> · <a href="https://github.com/secretbar/secretbar/releases">Versões</a> · <a href="https://github.com/secretbar/secretbar#readme">Docs</a></span>
+<footer class="foot">
+  <span>SecretBar · MIT · 2026</span>
+  <span><a href="https://github.com/secretbar/secretbar">Código-fonte</a> · <a href="https://github.com/secretbar/secretbar/releases">Versões</a> · <a href="https://github.com/secretbar/secretbar#readme">Documentação</a></span>
 </footer>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="/assets/main.js" defer></script>
+<script src="/assets/paper.js" defer></script>
 </body>
 </html>

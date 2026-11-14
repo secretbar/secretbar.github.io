@@ -7,20 +7,22 @@
 - Install: `brew install secretbar/tap/secretbar`
 - License: MIT. Platform: macOS. Command: `secret`. Menu bar app: SecretBar.
 
-## Features
+## The protocol
 
-- Hidden input: secret ask NAME opens a macOS dialog. You type the value. The agent gets stored: NAME. secret gen makes a random value that nobody sees.
-- Masked output: run --mask replaces each value with *** in stdout and stderr, also in base64 and URL encoding. Always on under Claude Code.
-- Claude Code hook: Stops secret get, cat .env, security … -w and env inside run before they start.
-- Post-quantum store: On macOS 26 and later, two Secure Enclave keys seal each value: P-256 and ML-KEM-768. A file copied today stays closed for a quantum computer later. secret touchid pq converts an old store after one Touch ID.
-- Lease for an agent: secret lease --for 8h NAME… holds the named secrets for up to 24 hours after one Touch ID that names them. They stay readable while the screen is locked. Any other name fails at once with not leased. secret lease --revoke ends it.
-- Search by meaning: secret ls --ask "shop database password" finds names with the on-device Apple model of macOS 27. The model sees names and comments only, never a value, and nothing leaves the Mac.
-- GitHub Actions: secret gh NAME -R owner/repo pushes a value to gh secret set through stdin, after you confirm it.
-- Browser sessions: secret cookie pull DOMAIN --all --as NAME moves a Safari session into the store as a cookie jar. A Safari extension captures session-only cookies. secret run --cookie-jar NAME gives curl a temporary jar that is deleted after the command.
-- References, not values: TOKEN=secret:MY_TOKEN in your .env. secret import moves an existing file. secret check shows what is missing.
-- Access log: Who read which secret and when: agent or human. Names only.
-- Expiry and backup: -x 2026-12-31 marks a token that expires. secret ls --expiring and SecretBar remind you. secret export writes one AES-256 file for a new Mac.
-- Works with any agent: Claude Code, Codex, Cursor, Aider: any agent that runs shell commands uses secret run. Claude Code also gets the hook and ready rules for CLAUDE.md.
+- Input: A human types the value into a hidden macOS dialog: secret ask NAME. The chat never sees it. secret gen makes a random value that nobody sees.
+- Storage: Keys in the Secure Enclave seal each value: P-256 and post-quantum ML-KEM-768. The whole file is encrypted again. Nothing goes to a cloud.
+- Access: A read needs Touch ID or Apple Watch. The grace time slides for 30 minutes and ends when the screen locks. A lease gives an agent named secrets for up to 24 hours, after one Touch ID.
+- Use: secret run puts the value into the environment of one process. Not into argv, a file or the chat. A .env file holds references: secret:NAME.
+- Output: Each value in stdout and stderr comes back as ***, also in base64 and URL encoding. A Claude Code hook stops cat .env, secret get and env before they run.
+- Record: An access log keeps who read which name and when: agent or human. Names only.
+
+## Also included
+
+- Search by meaning. secret ls --ask "shop database" finds names with the on-device model of macOS 27. It reads names and comments, never values.
+- Browser sessions. A Safari session moves into the store as a cookie jar. curl uses it, the agent never sees a cookie.
+- GitHub Actions. secret gh NAME -R owner/repo sends a value to gh secret set on stdin, after you confirm.
+- Expiry and backup. Tokens with a date remind you before they expire. secret export writes one AES-256 file for a new Mac.
+- Any agent. Claude Code, Codex, Cursor, Aider: any agent that runs shell commands. Claude Code also gets the hook and ready rules.
 
 ## FAQ
 
