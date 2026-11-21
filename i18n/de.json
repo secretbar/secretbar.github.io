@@ -43,6 +43,7 @@
   "more.cookie": "<b>Browser-Sitzungen.</b> Eine Safari-Sitzung zieht als Cookie-Jar in den Speicher um. curl nutzt sie, der Agent sieht nie ein Cookie.",
   "more.gh": "<b>GitHub Actions.</b> <code>secret gh NAME -R owner/repo</code> übergibt einen Wert über stdin an <code>gh secret set</code>, nach deiner Bestätigung.",
   "more.expiry": "<b>Ablauf und Backup.</b> Tokens mit Datum erinnern dich, bevor sie ablaufen. <code>secret export</code> schreibt eine AES-256-Datei für einen neuen Mac.",
+  "more.yolo": "<b>YOLO-Modus.</b> Standardmäßig aus. <code>secret yolo on</code> oder der Schalter im Menü fragt einmal nach Touch ID. Danach lesen Agenten jedes Geheimnis ohne Rückfrage, bis du ihn ausschaltest, auch bei gesperrtem Bildschirm. Die Ausgabe bleibt maskiert, und nur du kannst ihn einschalten.",
   "more.agents": "<b>Jeder Agent.</b> Claude Code, Codex, Cursor, Aider: jeder Agent, der Shell-Befehle ausführt. Claude Code bekommt zusätzlich den Hook und fertige Regeln.",
   "app.kicker": "Die Menüleisten-App",
   "app.title": "Die menschliche Seite des Protokolls.",
